@@ -31,7 +31,7 @@ Jenkins 保留登录认证和 CSRF 防护，HTTP 端口仅绑定到 127.0.0.1。
 | TEST_BRANCH | Git 分支，默认 main，实际分支可修改 |
 | TEST_MARKERS | 留空运行全量；填写 smoke、articles、e2e 等 Pytest 表达式 |
 
-后端必须已经启动。测试容器的 127.0.0.1 是容器自己，访问 Mac 上的后端使用 `host.docker.internal`。Django 的 ALLOWED_HOSTS 已加入这个主机名。没有自动部署后端或 MySQL，也没有配置定时任务。
+后端必须已经独立启动并保持运行。Jenkins 只拉取测试代码、构建测试运行器、运行 Pytest 和归档报告，不启动、停止、部署后端或 MySQL。测试容器的 127.0.0.1 是容器自己，访问 Mac 上的后端使用 `host.docker.internal`。Django 的 ALLOWED_HOSTS 已加入这个主机名。没有自动部署后端或 MySQL，也没有配置定时任务。
 
 首次或运行器依赖发生变化时会重新构建镜像。镜像内包含 Python、Git、Pytest、Allure Pytest 插件和启动脚本。容器启动后读取所选测试代码的 requirements.txt 同步依赖，避免分支依赖与镜像不一致。
 
@@ -105,3 +105,9 @@ python3 ci/jenkins/manage.py run --repo ''
 ## 中文编码
 
 中文插件为 Locale 和 Localization Chinese Simplified，默认语言为 zh_CN，并忽略浏览器的语言偏好。JVM 文件编码为 UTF-8，进程 locale 为 C.UTF-8。通过 API 保存 config.xml 时必须使用 UTF-8 XML 声明及 `Content-Type: application/xml; charset=UTF-8`，避免中文说明被错误解码。已存在的乱码需要用原始中文重新写入，仅调整语言插件不能恢复错误文本。
+
+## 与后端启动分离
+
+后端项目位于 `/Users/redsap/pycharm/realWorld-DjangoRestFramework`，由该项目自己的 Docker Compose 常驻运行，容器名 `realworld-backend`。需要维护服务时，在后端目录手工运行 `docker compose up -d --build` 或 `docker compose stop`。这些命令不会加入 Jenkinsfile，也不会因某次测试结束而停止后端。
+
+Jenkins 中的“构建测试镜像”只构建 `realworld-api-runner`，不是业务项目镜像。若目标服务不可用，测试任务报告失败，不代替服务部署。
