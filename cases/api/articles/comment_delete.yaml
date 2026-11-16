@@ -1,0 +1,5 @@
+# 删除评论 DELETE /articles/{slug}/comments/{id}（实现无鉴权/归属校验）
+cases:
+  - name: 删除评论
+    expect:
+      status_code: 204

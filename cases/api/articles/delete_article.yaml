@@ -1,0 +1,11 @@
+# 删除文章 DELETE /articles/{slug}（实现：作者删除返回 200，非 204）
+cases:
+  - name: 作者删除成功
+    expect:
+      status_code: 200
+
+  - name: 非作者删除返回401
+    second_user: true
+    expect:
+      status_code: 401
+      has_errors: true

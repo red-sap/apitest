@@ -1,0 +1,12 @@
+# 获取单篇文章 GET /articles/{slug}
+cases:
+  - name: 获取已创建文章
+    expect:
+      status_code: 200
+      body_has_key: article
+
+  - name: 获取不存在文章(实现返回404)
+    slug: "no-such-slug-zzz"
+    expect:
+      status_code: 404
+      has_errors: true

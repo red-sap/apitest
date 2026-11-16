@@ -1,0 +1,6 @@
+# 取消收藏 DELETE /articles/{slug}/favorite（实现返回 200，非 204）
+cases:
+  - name: 取消收藏成功
+    expect:
+      status_code: 200
+      body_has_key: article

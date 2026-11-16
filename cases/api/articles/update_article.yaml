@@ -1,0 +1,24 @@
+# 更新文章 PUT /articles/{slug}
+cases:
+  - name: 作者更新成功
+    json:
+      article:
+        title: __UUID__
+        description: "更新后的描述"
+        body: "更新后的正文"
+        tagList: ["apitest"]
+    expect:
+      status_code: 200
+      body_has_key: article
+
+  - name: 非作者更新返回401
+    second_user: true
+    json:
+      article:
+        title: __UUID__
+        description: "越权更新"
+        body: "越权更新"
+        tagList: ["apitest"]
+    expect:
+      status_code: 401
+      has_errors: true

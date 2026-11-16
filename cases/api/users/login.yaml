@@ -1,0 +1,29 @@
+# 用户登录接口 POST /users/login
+cases:
+  - name: 登录成功
+    json:
+      user:
+        email: __fixture_email__
+        password: __fixture_password__
+    expect:
+      status_code: 202
+      body_has_key: user
+      token_present: true
+
+  - name: 密码错误
+    json:
+      user:
+        email: __fixture_email__
+        password: "WrongPassw0rd!999"
+    expect:
+      status_code: 400
+      body_empty: true
+
+  - name: 邮箱不存在
+    json:
+      user:
+        email: __UUID__@example.com
+        password: "Passw0rd!123"
+    expect:
+      status_code: 400
+      body_empty: true

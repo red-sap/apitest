@@ -1,0 +1,17 @@
+# 创建评论 POST /articles/{slug}/comments（实现返回 200，非 201）
+cases:
+  - name: 创建评论成功
+    json:
+      comment:
+        body: "__UUID__ 评论内容"
+    expect:
+      status_code: 200
+      body_has_key: comment
+
+  - name: 未登录返回401
+    no_auth: true
+    json:
+      comment:
+        body: "匿名评论"
+    expect:
+      status_code: 401

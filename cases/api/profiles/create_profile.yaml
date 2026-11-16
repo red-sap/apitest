@@ -1,0 +1,10 @@
+# 创建用户资料 POST /profiles
+# 实现缺陷：ProfileSerializer 不含 email，首次调用可成功（email 落为空串），
+# 之后因 email 唯一约束(空串重复)一律 500。测试用唯一 username，用完即删。
+cases:
+  - name: 创建资料(首次成功)
+    json:
+      username: __UUID__
+      bio: "profile bio"
+    expect:
+      status_code: 201

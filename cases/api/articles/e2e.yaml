@@ -1,0 +1,10 @@
+# 端到端文章生命周期链路（场景执行器编排，逐步骤断言）
+cases:
+  - name: 文章全链路(创建-读取-评论-收藏-取消收藏-删除)
+    expect:
+      create_status: 201
+      read_status: 200
+      comment_status: 200
+      favorite_status: 200
+      unfavorite_status: 200
+      delete_status: 200

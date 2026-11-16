@@ -1,0 +1,13 @@
+.git
+.idea
+venv
+.venv
+__pycache__
+**/__pycache__
+.pytest_cache
+.ci-local
+reports
+log
+.env
+*.pem
+*.key

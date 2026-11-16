@@ -1,0 +1,6 @@
+# 用户资料列表 GET /profiles（实现缺陷：list 逻辑实为单查，恒返回 Invalid User）
+cases:
+  - name: 资料列表返回错误(缺陷)
+    expect:
+      status_code: 200
+      has_errors: true

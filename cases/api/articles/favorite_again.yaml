@@ -1,0 +1,6 @@
+# 重复收藏 POST /articles/{slug}/favorite（实现：已收藏再收藏返回 200 + errors）
+cases:
+  - name: 重复收藏返回错误
+    expect:
+      status_code: 200
+      has_errors: true

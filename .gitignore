@@ -1,0 +1,16 @@
+
+# Local test environments, CI workspaces and bootstrap credentials
+venv/
+.venv/
+__pycache__/
+.pytest_cache/
+.ci-local/
+.env
+log/
+reports/
+
+# IDE and local credentials
+.idea/
+.DS_Store
+*.pem
+*.key

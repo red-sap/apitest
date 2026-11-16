@@ -1,0 +1,10 @@
+# 获取用户资料 GET /profiles/{username}
+cases:
+  - name: 已登录获取资料
+    expect:
+      status_code: 200
+
+  - name: 未登录返回401
+    no_auth: true
+    expect:
+      status_code: 401

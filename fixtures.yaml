@@ -1,0 +1,11 @@
+# ============================================================
+# 用户自定义 fixture 定义（本项目当前为纯 Python fixture 承载关联，
+# 暂未使用 YAML 声明式 fixture；保留空列表以符合工程约定）。
+#
+# 关联实现见：
+#   - conftest.py（根）：api_client / test_user / second_user / auth_headers
+#   - tests/api/articles/conftest.py：prepared_article / prepared_comment / 场景执行器
+#   - tests/api/profiles/conftest.py：关注链准备
+# ============================================================
+
+fixtures: []

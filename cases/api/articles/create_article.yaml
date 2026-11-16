@@ -1,0 +1,33 @@
+# 创建文章 POST /articles
+cases:
+  - name: 创建成功
+    json:
+      article:
+        title: __UUID__
+        description: "接口自动化描述"
+        body: "接口自动化正文"
+        tagList: ["apitest"]
+    expect:
+      status_code: 201
+      body_has_key: article
+
+  - name: 缺少标题(实现返回404)
+    json:
+      article:
+        description: "只有描述"
+        body: "只有正文"
+        tagList: ["apitest"]
+    expect:
+      status_code: 404
+      has_errors: true
+
+  - name: 未登录返回401
+    no_auth: true
+    json:
+      article:
+        title: __UUID__
+        description: "d"
+        body: "b"
+        tagList: ["apitest"]
+    expect:
+      status_code: 401

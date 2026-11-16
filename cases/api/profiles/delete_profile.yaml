@@ -1,0 +1,5 @@
+# 删除用户资料 DELETE /profiles/{username}（无归属校验，任意登录用户可删除任意账号）
+cases:
+  - name: 删除临时用户
+    expect:
+      status_code: 204

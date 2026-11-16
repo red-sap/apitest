@@ -1,0 +1,6 @@
+# 评论列表 GET /articles/{slug}/comments
+cases:
+  - name: 评论列表
+    expect:
+      status_code: 200
+      body_has_key: comments

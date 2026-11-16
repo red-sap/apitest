@@ -1,0 +1,6 @@
+# 收藏文章 POST /articles/{slug}/favorite（实现返回 200，非 201）
+cases:
+  - name: 收藏成功
+    expect:
+      status_code: 200
+      body_has_key: article

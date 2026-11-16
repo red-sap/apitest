@@ -1,0 +1,6 @@
+# 关注流 GET /articles/feed（实现缺陷：响应体为 {comments, articleCount}，而非文章数组）
+cases:
+  - name: 关注流(缺陷响应结构)
+    expect:
+      status_code: 200
+      body_has_key: articleCount

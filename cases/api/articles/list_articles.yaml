@@ -1,0 +1,20 @@
+# 文章列表 GET /articles
+cases:
+  - name: 列表(匿名)
+    expect:
+      status_code: 200
+      body_is_list: true
+
+  - name: 按作者过滤
+    params:
+      author: __fixture_username__
+    expect:
+      status_code: 200
+      body_is_list: true
+
+  - name: limit过滤
+    params:
+      limit: 1
+    expect:
+      status_code: 200
+      body_is_list: true

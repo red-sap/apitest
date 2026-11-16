@@ -1,0 +1,39 @@
+# 用户注册接口 POST /users
+cases:
+  - name: 注册成功
+    json:
+      user:
+        username: __UUID__
+        email: __UUID__@example.com
+        password: "Passw0rd!123"
+    expect:
+      status_code: 201
+      body_has_key: user
+
+  - name: 缺少密码
+    json:
+      user:
+        username: __UUID__
+        email: __UUID__@example.com
+    expect:
+      status_code: 400
+      body_empty: true
+
+  - name: 缺少邮箱
+    json:
+      user:
+        username: __UUID__
+        password: "Passw0rd!123"
+    expect:
+      status_code: 400
+      body_empty: true
+
+  - name: 邮箱已存在
+    json:
+      user:
+        username: __UUID__
+        email: __fixture_email__
+        password: "Passw0rd!123"
+    expect:
+      status_code: 400
+      body_empty: true

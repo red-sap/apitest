@@ -1,0 +1,6 @@
+# 取消关注 DELETE /profiles/{username}/follow
+cases:
+  - name: 取消关注成功
+    expect:
+      status_code: 200
+      body_has_key: profile

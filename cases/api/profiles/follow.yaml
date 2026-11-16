@@ -1,0 +1,12 @@
+# 关注用户 POST /profiles/{username}/follow
+cases:
+  - name: 关注成功
+    expect:
+      status_code: 200
+      body_has_key: profile
+
+  - name: 关注自己返回400
+    self_follow: true
+    expect:
+      status_code: 400
+      has_errors: true

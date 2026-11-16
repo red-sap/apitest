@@ -1,0 +1,6 @@
+# 标签列表 GET /tags
+cases:
+  - name: 获取标签列表
+    expect:
+      status_code: 200
+      body_has_key: tags

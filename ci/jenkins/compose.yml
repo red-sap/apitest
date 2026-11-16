@@ -1,0 +1,58 @@
+name: realworld-ci
+services:
+  jenkins:
+    build:
+      context: ../..
+      dockerfile: ci/jenkins/Dockerfile
+    image: realworld-jenkins:local
+    container_name: realworld-jenkins
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:8080:8080"
+    environment:
+      JAVA_OPTS: -Djenkins.install.runSetupWizard=false -Xmx768m -Dfile.encoding=UTF-8 -Dsun.jnu.encoding=UTF-8
+      LANG: C.UTF-8
+      LC_ALL: C.UTF-8
+      JENKINS_ADMIN_USER: ${JENKINS_ADMIN_USER:?Set bootstrap username}
+      JENKINS_ADMIN_PASSWORD: ${JENKINS_ADMIN_PASSWORD:?Set bootstrap password}
+      JENKINS_AGENT_WORKDIR: ${JENKINS_AGENT_WORKDIR:?Set host agent directory}
+    volumes:
+      - jenkins-home:/var/jenkins_home
+      - agent-secret:/var/jenkins_agent_secret
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://localhost:8080/login >/dev/null"]
+      interval: 10s
+      timeout: 5s
+      retries: 30
+      start_period: 60s
+  agent:
+    build:
+      context: ../..
+      dockerfile: ci/jenkins/Dockerfile.agent
+    image: realworld-jenkins-agent:local
+    container_name: realworld-api-agent
+    restart: unless-stopped
+    depends_on:
+      jenkins:
+        condition: service_healthy
+    environment:
+      JENKINS_URL: http://jenkins:8080/
+      JENKINS_AGENT_NAME: api-docker
+      JENKINS_WEB_SOCKET: "true"
+      JENKINS_AGENT_WORKDIR: ${JENKINS_AGENT_WORKDIR}
+      LOCAL_TEST_SOURCE_DIR: ${LOCAL_TEST_SOURCE_DIR:?Set local test directory}
+      LANG: C.UTF-8
+      LC_ALL: C.UTF-8
+      GIT_SSH_AGENT_SOCKET: /run/host-services/ssh-auth.sock
+      GIT_KNOWN_HOSTS_FILE: ${LOCAL_TEST_SOURCE_DIR}/.ci-local/ssh/known_hosts
+    entrypoint: ["/bin/bash", "-c"]
+    command:
+      - 'export JENKINS_SECRET="$$(cat /agent-secret/secret)"; exec /usr/local/bin/jenkins-agent'
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - agent-secret:/agent-secret:ro
+      # 路径在 Agent 与宿主机上保持一致，供 Docker daemon 绑定报告目录。
+      - ${LOCAL_TEST_SOURCE_DIR}:${LOCAL_TEST_SOURCE_DIR}
+volumes:
+  jenkins-home:
+  agent-secret:
